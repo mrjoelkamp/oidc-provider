@@ -23,6 +23,8 @@ type Storage struct {
 	tokens   map[string]*Token
 }
 
+// NewStorage creates an in-memory storage for requests, codes, and tokens
+// TODO: add persistent storage to check for code reuse and issue refresh tokens
 func NewStorage() *Storage {
 	return &Storage{
 		requests: make(map[string]*AuthRequest),

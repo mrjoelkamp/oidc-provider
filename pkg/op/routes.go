@@ -4,6 +4,8 @@ import (
 	"net/http"
 )
 
+// OIDC endpoints
+// TODO: make these configurable
 const (
 	DiscoveryEndpoint     = "/.well-known/openid-configuration"
 	AuthorizationEndpoint = "/authorize"
@@ -11,6 +13,7 @@ const (
 	JWKSEndpoint          = "/jwks.json"
 )
 
+// addRoutes adds all API routes to the provided mux
 func addRoutes(
 	mux *http.ServeMux,
 	logger *Logger,

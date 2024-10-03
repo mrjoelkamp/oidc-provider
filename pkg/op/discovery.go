@@ -13,6 +13,7 @@ type OIDCDiscovery struct {
 	ScopesSupported       []string `json:"scopes_supported"`
 }
 
+// handleDiscovery returns a handler that serves the discovery endpoint
 func handleDiscovery(logger *Logger, op *OIDCProvider) http.HandlerFunc {
 	discovery := &OIDCDiscovery{
 		Issuer:                op.Issuer(),
@@ -25,12 +26,10 @@ func handleDiscovery(logger *Logger, op *OIDCProvider) http.HandlerFunc {
 	if err != nil {
 		logger.Error("failed to marshal discovery response", "error", err)
 		return func(w http.ResponseWriter, r *http.Request) {
-			allowCORS(&w)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
-		allowCORS(&w)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(response)

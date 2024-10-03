@@ -14,7 +14,10 @@ const (
 	port = "5001"
 )
 
+// main is the entrypoint for the application
 func main() {
+	// create app configuration
+	// TODO: make configurable as args
 	config := &op.Config{
 		LogLevel: "debug",
 		KeyPath:  "./keys/priv.pem",
@@ -22,8 +25,10 @@ func main() {
 		Port:     port,
 		Issuer:   fmt.Sprintf("http://%s:%s", host, port),
 	}
+
+	// create logger, storage, and server
 	logger := op.NewLogger(config)
-	logger.Info("issuer", "host", config.Issuer)
+	logger.Info("oidc provider", "iss", config.Issuer)
 	storage := op.NewStorage()
 	srv := op.NewServer(logger, config, storage)
 	httpServer := &http.Server{
@@ -31,6 +36,7 @@ func main() {
 		Handler: srv,
 	}
 
+	// start server
 	log.Printf("listening on %s\n", httpServer.Addr)
 	if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		fmt.Fprintf(os.Stderr, "error listening and serving: %s\n", err)
