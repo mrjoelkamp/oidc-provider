@@ -83,14 +83,14 @@ func handleAuthorization(logger *Logger, op *OIDCProvider, storage *Storage) htt
 
 		// write response
 		w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-		response, err := authResponse(authRequest, code)
+		uri, err := authResponse(authRequest, code)
 		if err != nil {
 			logger.Error("failed to generate response", "error", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		logger.Debug("authorization response", "uri", response)
-		http.Redirect(w, r, response, http.StatusFound)
+		logger.Debug("authorization response", "uri", uri)
+		http.Redirect(w, r, uri, http.StatusFound)
 	}
 }
 
@@ -129,8 +129,8 @@ func validateAuthRequest(w http.ResponseWriter, r *http.Request, authReq *AuthRe
 	}
 
 	// require code challenge if code challenge method is provided
-	if authReq.codeChallenge != "" && authReq.codeChallengeMethod == "" {
-		err := fmt.Errorf("missing code_challenge_method")
+	if authReq.codeChallenge == "" && authReq.codeChallengeMethod != "" {
+		err := fmt.Errorf("missing code_challenge")
 		authErrorResponse(w, r, authReq, ErrInvalidRequest, err.Error())
 		return err
 	}

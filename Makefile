@@ -30,8 +30,10 @@ fmt:
 keys:
 	./scripts/keygen.sh
 
-# TODO: Add docker build
-#
-# .PHONY: docker-build
-# docker-build:
-# 	docker build -t $(APP_NAME) .
+.PHONY: docker-build
+docker-build:
+	docker build -t $(APP_NAME) .
+
+.PHONY: docker-run
+docker-run:
+	docker run -p 5001:5001 $(APP_NAME)

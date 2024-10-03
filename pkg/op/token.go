@@ -49,7 +49,7 @@ func handleToken(logger *Logger, op *OIDCProvider, storage *Storage) http.Handle
 		// verify authorization code
 		err = verifyAuthCode(storage, tokenRequest, op.codeTimeout)
 		if err != nil {
-			errorResponse(w, ErrInvalidGrant, err.Error())
+			errorResponse(w, ErrInvalidRequest, err.Error())
 			logger.Error("failed to verify auth code", "error", err)
 			return
 		}
@@ -91,11 +91,6 @@ func parseTokenRequest(r *http.Request) *TokenRequest {
 
 // validateTokenRequest checks that the token request is well-formed
 func validateTokenRequest(w http.ResponseWriter, r *TokenRequest) error {
-	if r.GrantType != "authorization_code" {
-		err := fmt.Errorf("unsupported grant_type: %s", r.GrantType)
-		errorResponse(w, ErrUnsuppoertedGrantType, err.Error())
-		return err
-	}
 	if r.Code == "" {
 		err := fmt.Errorf("missing code")
 		errorResponse(w, ErrInvalidRequest, err.Error())
@@ -104,6 +99,11 @@ func validateTokenRequest(w http.ResponseWriter, r *TokenRequest) error {
 	if r.RedirectURI == "" {
 		err := fmt.Errorf("missing redirect_uri")
 		errorResponse(w, ErrInvalidRequest, err.Error())
+		return err
+	}
+	if r.GrantType != "authorization_code" {
+		err := fmt.Errorf("unsupported grant_type: %s", r.GrantType)
+		errorResponse(w, ErrUnsupportedGrantType, err.Error())
 		return err
 	}
 	return nil
@@ -120,7 +120,7 @@ func verifyAuthCode(storage *Storage, r *TokenRequest, timeout int) error {
 	}
 	// delete after use
 	// TODO: with persistant storage and refresh tokens keep codes to detect reuse and revoke tokens
-	defer delete(storage.codes, r.Code) 
+	defer delete(storage.codes, r.Code)
 
 	// check that the code hasn't expired
 	if authCode.Issued.Add(time.Duration(timeout) * time.Minute).Before(time.Now()) {

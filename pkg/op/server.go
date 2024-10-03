@@ -18,7 +18,7 @@ var (
 	ErrInvalidScope            ErrorCode = "invalid_scope"
 	ErrServerError             ErrorCode = "server_error"
 	ErrTemporarilyUnavailable  ErrorCode = "temporarily_unavailable"
-	ErrUnsuppoertedGrantType   ErrorCode = "unsupported_grant_type"
+	ErrUnsupportedGrantType    ErrorCode = "unsupported_grant_type"
 	ErrInvalidClient           ErrorCode = "invalid_client"
 	ErrInvalidGrant            ErrorCode = "invalid_grant"
 )
