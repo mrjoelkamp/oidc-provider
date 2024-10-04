@@ -39,6 +39,12 @@ To build the oidc-provider app using Go run `make build`
 
 To run the oidc-provider app using Go run `make run`
 
+### Generating keys
+
+There is a pre-generated example key in `./keys` that can be used to build and run the OP. 
+
+To generate new keys simply run `make keys`.
+
 ## Tests
 
 Tests can be run for the major components by running `make test`.

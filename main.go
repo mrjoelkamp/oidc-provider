@@ -13,6 +13,7 @@ import (
 	"github.com/mrjoelkamp/oidc-provider/pkg/op"
 )
 
+// host and port for the application
 const (
 	host = "localhost"
 	port = "5001"

@@ -162,6 +162,7 @@ func TestAuthRequest(t *testing.T) {
 				},
 			}
 
+			// must support both POST and GET requests https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
 			// form post request
 			post, err := client.PostForm(testServer.URL+AuthorizationEndpoint, tc.body)
 			require.NoError(t, err)

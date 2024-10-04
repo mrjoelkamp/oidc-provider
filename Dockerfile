@@ -13,6 +13,7 @@ FROM gcr.io/distroless/static:nonroot AS dev
 
 COPY --from=builder /bin/oidc-provider /
 
+# warning: this is only for development, do not use in production
 COPY --chown=nonroot keys/priv.pem ./keys/priv.pem
 
 USER nonroot
