@@ -42,12 +42,12 @@ func TestAuthRequest(t *testing.T) {
 		{
 			name: "valid request (no PKCE)",
 			body: url.Values{
-				"scope":                 {"openid"},
-				"response_type":         {"code"},
-				"redirect_uri":          {"http://test.com"},
-				"state":                 {"test-state"},
-				"nonce":                 {"test-nonce"},
-				"response_mode":         {"query"},
+				"scope":         {"openid"},
+				"response_type": {"code"},
+				"redirect_uri":  {"http://test.com"},
+				"state":         {"test-state"},
+				"nonce":         {"test-nonce"},
+				"response_mode": {"query"},
 			},
 			pass: true,
 		},
@@ -180,7 +180,6 @@ func TestAuthRequest(t *testing.T) {
 					assert.Equal(t, params.Get("error"), string(tc.failure))
 				}
 			}
-
 
 			// get query request
 			url, err := url.Parse(testServer.URL + AuthorizationEndpoint)

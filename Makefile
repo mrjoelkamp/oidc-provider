@@ -36,4 +36,4 @@ docker-build:
 
 .PHONY: docker-run
 docker-run:
-	docker run -p 5001:5001 $(APP_NAME)
+	docker run --network=host -p 5001:5001 $(APP_NAME)
